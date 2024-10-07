@@ -14,6 +14,37 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // Verificar si el correo electrónico tiene una terminación permitida
+    const allowedDomains = ['@gmail.com', '@outlook.com', '@hotmail.com'];
+    const emailDomain = email.substring(email.lastIndexOf('@'));
+
+    // Expresión regular para verificar caracteres especiales no permitidos en el correo (solo acepta letras, números, puntos y arroba)
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!allowedDomains.includes(emailDomain)) {
+      toast({
+        title: "Correo no válido",
+        description: "Solo se permiten correos de Gmail, Outlook o Hotmail.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return; // Detener la ejecución si el dominio no es válido
+    }
+
+    // Validar si el correo contiene caracteres especiales
+    if (!emailPattern.test(email)) {
+      toast({
+        title: "Correo no válido",
+        description: "El correo no debe contener caracteres especiales.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return; // Detener la ejecución si el correo tiene caracteres especiales
+    }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
 
