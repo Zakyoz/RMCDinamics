@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
-import { Box, FormControl, FormLabel, Input, Button, Container, Textarea, Flex, VStack, Link } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, Button, Container, Textarea, Flex, VStack, Link, Select, Image } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
+
+// Imágenes predeterminadas
+import Image1 from '../assets/image1.jpg';
+import Image2 from '../assets/image2.jpg';
+import Image3 from '../assets/image3.jpg';
+
 
 const CrearProyecto = () => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [imagen, setImagen] = useState(null);
+  const [imagen, setImagen] = useState(Image1); // Imagen predeterminada
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Crear un nuevo proyecto
+    // Crear un nuevo proyecto con imagen predeterminada
     const nuevoProyecto = {
       id: Date.now(),
       nombre,
       descripcion,
-      imagen: imagen ? URL.createObjectURL(imagen) : '', // Crear un URL local para la imagen
+      imagen, // Usar la imagen seleccionada
       fecha: new Date().toISOString(),
     };
 
@@ -75,13 +81,17 @@ const CrearProyecto = () => {
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="imagen">Imagen del Proyecto</FormLabel>
-            <Input
+            <FormLabel htmlFor="imagen">Selecciona una Imagen Predeterminada</FormLabel>
+            <Select
               id="imagen"
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImagen(e.target.files[0])}
-            />
+              value={imagen}
+              onChange={(e) => setImagen(e.target.value)}
+            >
+              <option value={Image1}>Imagen 1</option>
+              <option value={Image2}>Imagen 2</option>
+              <option value={Image3}>Imagen 3</option>
+            </Select>
+            <Image src={imagen} alt="Previsualización" boxSize="150px" mt={2} />
           </FormControl>
           <Button type="submit" colorScheme="teal">
             Crear Proyecto
