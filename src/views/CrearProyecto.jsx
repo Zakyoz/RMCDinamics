@@ -4,36 +4,44 @@ import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
 // Imágenes predeterminadas
-import Image1 from '../assets/image1.jpg';
-import Image2 from '../assets/image2.jpg';
-import Image3 from '../assets/image3.jpg';
-
+import Image1 from '../assets/predeterminadas/image1.jpg';
+import Image2 from '../assets/predeterminadas/image2.jpg';
+import Image3 from '../assets/predeterminadas/image3.jpg';
 
 const CrearProyecto = () => {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [imagen, setImagen] = useState(Image1); // Imagen predeterminada
+  const [personalizada, setPersonalizada] = useState(null); // Imagen personalizada
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Crear un nuevo proyecto con imagen predeterminada
+    // Crear un nuevo proyecto con imagen predeterminada o personalizada
     const nuevoProyecto = {
       id: Date.now(),
       nombre,
       descripcion,
-      imagen, // Usar la imagen seleccionada
+      imagen: personalizada || imagen, // Usar la imagen seleccionada o personalizada
       fecha: new Date().toISOString(),
     };
-
     // Guardar el proyecto en localStorage
     const proyectosGuardados = JSON.parse(localStorage.getItem('proyectos')) || [];
     proyectosGuardados.push(nuevoProyecto);
     localStorage.setItem('proyectos', JSON.stringify(proyectosGuardados));
-
     // Redirigir al inicio
     navigate('/');
+  };
+
+  const handlePersonalizadaChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPersonalizada(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -58,7 +66,6 @@ const CrearProyecto = () => {
           </Link>
         </Flex>
       </Box>
-
       <Box as="form" onSubmit={handleSubmit} borderWidth={1} borderRadius="md" p={4} boxShadow="md">
         <VStack spacing={4} align="stretch">
           <FormControl>
@@ -93,6 +100,16 @@ const CrearProyecto = () => {
             </Select>
             <Image src={imagen} alt="Previsualización" boxSize="150px" mt={2} />
           </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="personalizada">O carga una Imagen Personalizada</FormLabel>
+            <Input
+              id="personalizada"
+              type="file"
+              accept="image/*"
+              onChange={handlePersonalizadaChange}
+            />
+            {personalizada && <Image src={personalizada} alt="Previsualización personalizada" boxSize="150px" mt={2} />}
+          </FormControl>
           <Button type="submit" colorScheme="teal">
             Crear Proyecto
           </Button>
@@ -102,4 +119,4 @@ const CrearProyecto = () => {
   );
 };
 
-export default CrearProyecto;
+export default CrearProyecto;
