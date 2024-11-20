@@ -1,4 +1,3 @@
-// src/views/Register.jsx
 import React, { useState } from 'react';
 import { Box, Heading, FormControl, FormLabel, Input, Button, Container, Text, useToast, Flex } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -15,11 +14,8 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Verificar si el correo electrónico tiene una terminación permitida
     const allowedDomains = ['@gmail.com', '@outlook.com', '@hotmail.com'];
     const emailDomain = email.substring(email.lastIndexOf('@'));
-
-    // Expresión regular para verificar caracteres especiales no permitidos en el correo (solo acepta letras, números, puntos y arroba)
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (!allowedDomains.includes(emailDomain)) {
@@ -30,10 +26,9 @@ const Register = () => {
         duration: 5000,
         isClosable: true,
       });
-      return; // Detener la ejecución si el dominio no es válido
+      return;
     }
 
-    // Validar si el correo contiene caracteres especiales
     if (!emailPattern.test(email)) {
       toast({
         title: "Correo no válido",
@@ -42,13 +37,11 @@ const Register = () => {
         duration: 5000,
         isClosable: true,
       });
-      return; // Detener la ejecución si el correo tiene caracteres especiales
+      return;
     }
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-
-      // Mostrar mensaje de éxito
       toast({
         title: "Registro exitoso",
         description: "Te has registrado exitosamente. Ahora puedes iniciar sesión.",
@@ -56,11 +49,9 @@ const Register = () => {
         duration: 5000,
         isClosable: true,
       });
-
-      // Redirigir al inicio de sesión después de mostrar el mensaje
       setTimeout(() => {
         navigate('/login');
-      }, 3000); // Redirige después de 3 segundos para que el usuario pueda ver el mensaje
+      }, 3000);
     } catch (error) {
       console.error("Error en el registro:", error);
       toast({
@@ -79,9 +70,10 @@ const Register = () => {
       align="center"
       justify="center"
       h="100vh"
-      bgImage="url('https://drive.google.com/file/d/1HUFm8du4Mzg8peXtPcw3IesBVXpC4tGi/view?usp=drive_link')" // Cambia la ruta de la imagen según sea necesario
+      bgImage="url('/images/background.jpg')" // Cambia la ruta a tu imagen en la carpeta public
       bgSize="cover"
       bgPosition="center"
+      bgRepeat="no-repeat"
     >
       <Container maxW="container.md" py={4}>
         <Box
@@ -124,7 +116,10 @@ const Register = () => {
             Registrarse
           </Button>
           <Text mt={4} textAlign="center">
-            ¿Ya tienes una cuenta? <Button as="a" colorScheme="teal" variant="link" onClick={() => navigate('/login')}>Inicia sesión</Button>
+            ¿Ya tienes una cuenta?{' '}
+            <Button as="a" colorScheme="teal" variant="link" onClick={() => navigate('/login')}>
+              Inicia sesión
+            </Button>
           </Text>
         </Box>
       </Container>

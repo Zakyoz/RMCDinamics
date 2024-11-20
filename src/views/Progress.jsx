@@ -77,17 +77,11 @@ const Progreso = () => {
             <Link as={RouterLink} to="/" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
               Inicio
             </Link>
-            <Link as={RouterLink} to="/crearproyecto" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
-              Crear Proyecto
-            </Link>
             <Link as={RouterLink} to="/progreso" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
               Progreso
             </Link>
             <Link as={RouterLink} to="/pending-tasks" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
               Tareas Pendientes
-            </Link>
-            <Link as={RouterLink} to="/profile" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
-              Información de Usuario
             </Link>
           </Flex>
         </Box>
@@ -150,6 +144,17 @@ const Progreso = () => {
                     </Checkbox>
                   </Flex>
                 </Flex>
+
+                {/* Resumen de estados de tareas */}
+                <Box mt={4}>
+                  {sprint.tareas.length > 0 ? (
+                    sprint.tareas.map((tarea, tareaIndex) => (
+                      <Text key={tareaIndex}>• {tarea.nombre} - Estado: {tarea.estado}</Text>
+                    ))
+                  ) : (
+                    <Text>No hay tareas en este sprint.</Text>
+                  )}
+                </Box>
 
                 {/* Inputs de fecha */}
                 <Flex mt={4} gap={4}>

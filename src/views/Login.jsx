@@ -26,7 +26,7 @@ const Login = () => {
       align="center"
       justify="center"
       minH="100vh"
-      bgImage="url('/images/background.jpg')" // Ruta correcta a tu imagen en la carpeta public
+      bgImage="url('/images/background.jpg')" // Asegúrate de que esta ruta sea correcta
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
@@ -42,6 +42,7 @@ const Login = () => {
           boxShadow="md"
           bg="white" // Fondo blanco para el formulario
           mx="auto"
+          opacity="0.9" // Opcional: un poco de transparencia en el fondo del formulario
         >
           <Heading as="h1" size="lg" mb={4}>
             Iniciar Sesión

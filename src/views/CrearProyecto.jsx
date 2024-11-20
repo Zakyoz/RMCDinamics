@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, FormControl, FormLabel, Input, Button, Container, Textarea, Flex, VStack, Link, Select, Image } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Input, Button, Container, Textarea, Flex, VStack, Link, Select, Image, Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -13,6 +13,7 @@ const CrearProyecto = () => {
   const [descripcion, setDescripcion] = useState('');
   const [imagen, setImagen] = useState(Image1); // Imagen predeterminada
   const [personalizada, setPersonalizada] = useState(null); // Imagen personalizada
+  const [tipoImagen, setTipoImagen] = useState('predeterminada'); // Controla si es personalizada o predeterminada
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -55,12 +56,6 @@ const CrearProyecto = () => {
           <Link as={RouterLink} to="/crearproyecto" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
             Crear Proyecto
           </Link>
-          <Link as={RouterLink} to="/progreso" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
-            Progreso
-          </Link>
-          <Link as={RouterLink} to="/pending-tasks" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
-            Tareas Pendientes
-          </Link>
           <Link as={RouterLink} to="/profile" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
             Información de Usuario
           </Link>
@@ -88,28 +83,44 @@ const CrearProyecto = () => {
             />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="imagen">Selecciona una Imagen Predeterminada</FormLabel>
-            <Select
-              id="imagen"
-              value={imagen}
-              onChange={(e) => setImagen(e.target.value)}
-            >
-              <option value={Image1}>Imagen 1</option>
-              <option value={Image2}>Imagen 2</option>
-              <option value={Image3}>Imagen 3</option>
-            </Select>
-            <Image src={imagen} alt="Previsualización" boxSize="150px" mt={2} />
+            <FormLabel>¿Quieres una imagen predeterminada o personalizada?</FormLabel>
+            <RadioGroup onChange={setTipoImagen} value={tipoImagen}>
+              <Stack direction="row">
+                <Radio value="predeterminada">Predeterminada</Radio>
+                <Radio value="personalizada">Personalizada</Radio>
+              </Stack>
+            </RadioGroup>
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="personalizada">O carga una Imagen Personalizada</FormLabel>
-            <Input
-              id="personalizada"
-              type="file"
-              accept="image/*"
-              onChange={handlePersonalizadaChange}
-            />
-            {personalizada && <Image src={personalizada} alt="Previsualización personalizada" boxSize="150px" mt={2} />}
-          </FormControl>
+          
+          {tipoImagen === 'predeterminada' && (
+            <FormControl>
+              <FormLabel htmlFor="imagen">Selecciona una Imagen Predeterminada</FormLabel>
+              <Select
+                id="imagen"
+                value={imagen}
+                onChange={(e) => setImagen(e.target.value)}
+              >
+                <option value={Image1}>Imagen 1</option>
+                <option value={Image2}>Imagen 2</option>
+                <option value={Image3}>Imagen 3</option>
+              </Select>
+              <Image src={imagen} alt="Previsualización" boxSize="150px" mt={2} />
+            </FormControl>
+          )}
+
+          {tipoImagen === 'personalizada' && (
+            <FormControl>
+              <FormLabel htmlFor="personalizada">Carga una Imagen Personalizada</FormLabel>
+              <Input
+                id="personalizada"
+                type="file"
+                accept="image/*"
+                onChange={handlePersonalizadaChange}
+              />
+              {personalizada && <Image src={personalizada} alt="Previsualización personalizada" boxSize="150px" mt={2} />}
+            </FormControl>
+          )}
+
           <Button type="submit" colorScheme="teal">
             Crear Proyecto
           </Button>
@@ -119,4 +130,4 @@ const CrearProyecto = () => {
   );
 };
 
-export default CrearProyecto;
+export default CrearProyecto;

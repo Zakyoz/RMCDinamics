@@ -48,19 +48,13 @@ const Profile = () => {
         {/* Navbar */}
         <Box as="nav" mb={8}>
           <Flex as="ul" listStyleType="none" p={0} m={0} justify="center" wrap="wrap">
-            <Link as={RouterLink} to="/" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
+          <Link as={RouterLink} to="/" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
               Inicio
             </Link>
             <Link as={RouterLink} to="/crearproyecto" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
               Crear Proyecto
             </Link>
-            <Link as={RouterLink} to="/progreso" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
-              Progreso
-            </Link>
-            <Link as={RouterLink} to="/pending-tasks" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
-              Tareas Pendientes
-            </Link>
-            <Link as={RouterLink} to="/informacionusuario" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
+            <Link as={RouterLink} to="/profile" mx={4} p={2} rounded="md" _hover={{ bg: 'teal.500', color: 'white' }}>
               Información de Usuario
             </Link>
           </Flex>

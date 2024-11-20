@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Box, Heading, Text, Stack, Checkbox, Input, Button, Select } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -10,6 +9,9 @@ const SprintDetalle = () => {
   const [descripcionTarea, setDescripcionTarea] = useState('');
   const [fechaFinalizacion, setFechaFinalizacion] = useState('');
   const [estadoTarea, setEstadoTarea] = useState('pendiente');
+  const [rolTarea, setRolTarea] = useState('');
+  const [editando, setEditando] = useState(false);
+  const [indiceTareaEditando, setIndiceTareaEditando] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,27 +22,52 @@ const SprintDetalle = () => {
   }, []);
 
   const agregarTarea = () => {
-    const tareasActualizadas = sprints.map((sprint, index) => {
-      if (index === parseInt(sprintIndex)) {
-        return {
-          ...sprint,
-          tareas: [...sprint.tareas, {
-            nombre: nombreTarea,
-            descripcion: descripcionTarea,
-            fecha: fechaFinalizacion,
-            estado: estadoTarea,
-            completada: false
-          }]
-        };
-      }
-      return sprint;
-    });
-    setSprints(tareasActualizadas);
-    localStorage.setItem('sprints', JSON.stringify(tareasActualizadas));
+    const nuevasTareas = editando
+      ? sprints[sprintIndex].tareas.map((tarea, index) =>
+          index === indiceTareaEditando
+            ? { nombre: nombreTarea, descripcion: descripcionTarea, fecha: fechaFinalizacion, estado: estadoTarea, rol: rolTarea, completada: tarea.completada }
+            : tarea
+        )
+      : [
+          ...sprints[sprintIndex].tareas,
+          { nombre: nombreTarea, descripcion: descripcionTarea, fecha: fechaFinalizacion, estado: estadoTarea, rol: rolTarea, completada: false }
+        ];
+
+    const sprintsActualizados = sprints.map((sprint, index) =>
+      index === parseInt(sprintIndex) ? { ...sprint, tareas: nuevasTareas } : sprint
+    );
+
+    setSprints(sprintsActualizados);
+    localStorage.setItem('sprints', JSON.stringify(sprintsActualizados));
+
     setNombreTarea('');
     setDescripcionTarea('');
     setFechaFinalizacion('');
     setEstadoTarea('pendiente');
+    setRolTarea('');
+    setEditando(false);
+    setIndiceTareaEditando(null);
+  };
+
+  const editarTarea = (tareaIndex) => {
+    const tarea = sprints[sprintIndex].tareas[tareaIndex];
+    setNombreTarea(tarea.nombre);
+    setDescripcionTarea(tarea.descripcion);
+    setFechaFinalizacion(tarea.fecha);
+    setEstadoTarea(tarea.estado);
+    setRolTarea(tarea.rol);
+    setEditando(true);
+    setIndiceTareaEditando(tareaIndex);
+  };
+
+  const borrarTarea = (tareaIndex) => {
+    const nuevasTareas = sprints[sprintIndex].tareas.filter((_, index) => index !== tareaIndex);
+    const sprintsActualizados = sprints.map((sprint, index) =>
+      index === parseInt(sprintIndex) ? { ...sprint, tareas: nuevasTareas } : sprint
+    );
+
+    setSprints(sprintsActualizados);
+    localStorage.setItem('sprints', JSON.stringify(sprintsActualizados));
   };
 
   return (
@@ -74,14 +101,19 @@ const SprintDetalle = () => {
           value={estadoTarea}
           onChange={(e) => setEstadoTarea(e.target.value)}
         >
-          <option value="pendiente">Pendiente</option>
-          <option value="en progreso">En Progreso</option>
-          <option value="finalizado">Finalizado</option>
-          <option value="urgente">Urgente</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="En progreso">En Progreso</option>
+          <option value="Finalizado">Finalizado</option>
+          <option value="Urgente">Urgente</option>
         </Select>
+        <Input
+          placeholder="Rol de la tarea"
+          value={rolTarea}
+          onChange={(e) => setRolTarea(e.target.value)}
+        />
 
         <Button onClick={agregarTarea} colorScheme="teal">
-          Agregar Tarea
+          {editando ? 'Actualizar Tarea' : 'Agregar Tarea'}
         </Button>
       </Stack>
 
@@ -101,9 +133,16 @@ const SprintDetalle = () => {
           >
             <Text as={tarea.completada ? 's' : 'span'}>{tarea.nombre}</Text>
           </Checkbox>
-          <Text>{tarea.descripcion}</Text>
+          <Text>Descripción: {tarea.descripcion}</Text>
           <Text>Fecha: {tarea.fecha}</Text>
           <Text>Estado: {tarea.estado}</Text>
+          <Text>Rol: {tarea.rol}</Text>
+          <Button onClick={() => editarTarea(tareaIndex)} colorScheme="blue" size="sm" mt={2}>
+            Editar
+          </Button>
+          <Button onClick={() => borrarTarea(tareaIndex)} colorScheme="red" size="sm" mt={2} ml={2}>
+            Borrar
+          </Button>
         </Box>
       ))}
     </Box>

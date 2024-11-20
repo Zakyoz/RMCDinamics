@@ -1,4 +1,4 @@
-
+// App.jsx
 import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './views/Home';
@@ -7,10 +7,10 @@ import Profile from './views/Profile';
 import Progress from './views/Progress';
 import CrearProyecto from './views/CrearProyecto';
 import TareasPendientes from './views/TareasPendientes';
-//import ListaProyectos from './views/ListaProyectos';
 import Register from './views/Registro';
 import SprintDetalle from './views/SprintDetalle';
 import Protected from './components/Protected';
+import ProjectDetails from './views/ProjectDetails';  // Asegúrate de que la ruta sea correcta
 import app from '../firebaseconfig';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -24,7 +24,6 @@ function App() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserAuth(user.email);
-        console.log(user);
       } else {
         console.log("Favor de volverse a autenticar");
       }
@@ -51,8 +50,9 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path="/progreso" element={<Progress tareas={tareas} />} />
         <Route path="/sprint/:sprintIndex" element={<SprintDetalle />} />
-        <Route path='/crearproyecto' element={<CrearProyecto />} /> {/* Ruta para la creación de proyecto */}
+        <Route path='/crearproyecto' element={<CrearProyecto />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/proyecto/:id" element={<ProjectDetails tareas={tareas} completarTarea={completarTarea} />} />
       </Route>
     </Routes>
   );
