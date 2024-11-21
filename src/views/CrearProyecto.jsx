@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
 // Imágenes predeterminadas
-import Image1 from '../assets/predeterminadas/image1.jpg';
-import Image2 from '../assets/predeterminadas/image2.jpg';
-import Image3 from '../assets/predeterminadas/image3.jpg';
+import Image1 from '/assets/predeterminadas/image1.jpg';
+import Image2 from '/assets/predeterminadas/image2.jpg';
+import Image3 from '/assets/predeterminadas/image3.jpg';
 
 const CrearProyecto = () => {
   const [nombre, setNombre] = useState('');

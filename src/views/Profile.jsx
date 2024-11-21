@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import app from '../../firebaseconfig';
+import app from '/config/firebaseconfig';
 import { Box, Text, Button, Flex, Link, Container, VStack, Heading } from '@chakra-ui/react';
 
 const Profile = () => {

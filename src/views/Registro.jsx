@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Heading, FormControl, FormLabel, Input, Button, Container, Text, useToast, Flex } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import app from '../../firebaseconfig';
+import app from '/config/firebaseconfig';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -70,7 +70,7 @@ const Register = () => {
       align="center"
       justify="center"
       h="100vh"
-      bgImage="url('/images/background.jpg')" // Cambia la ruta a tu imagen en la carpeta public
+      bgImage="url('/assets/background.jpg')" // Cambia la ruta a tu imagen en la carpeta public
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"

@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Heading, FormControl, FormLabel, Input, Button, Container, Text, Flex } from '@chakra-ui/react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import app from '../../firebaseconfig';
+import app from '/config/firebaseconfig';
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
@@ -26,7 +26,7 @@ const Login = () => {
       align="center"
       justify="center"
       minH="100vh"
-      bgImage="url('/images/background.jpg')" // Asegúrate de que esta ruta sea correcta
+      bgImage="url('/assets/background.jpg')" // Asegúrate de que esta ruta sea correcta
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
@@ -44,7 +44,7 @@ const Login = () => {
           mx="auto"
           opacity="0.9" // Opcional: un poco de transparencia en el fondo del formulario
         >
-          <Heading as="h1" size="lg" mb={4}>
+          <Heading as="h1" size="lg" mb={4} textAlign="center">
             Iniciar Sesión
           </Heading>
           <FormControl mb={4}>
